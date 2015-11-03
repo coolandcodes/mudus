@@ -12,6 +12,10 @@
  
  
 window.Mudus = (function($win, $doc, $callback){
+	
+	Object.each = function(obj, iterator, context){
+                 // more code here...
+	}
 
         Array.prototype.forEach = Array.prototype.forEach || function (h, i){
                  if (typeof h != 'function') {
@@ -200,10 +204,10 @@ it!
             
 			if( fired ){ // only if we have already run the {pending} list of routines at least once, ...
 			   if(options.join && !options.unpack){
-			      // fireStart = start; 
-			   	  fireEnd = len; // update info again...
+			           // fireStart = start; 
+			   	     fireEnd = len; // update info again...
 				     fire.$decline = true;
-	        fire( savedData ); // fire with the saved data 
+	                            fire( savedData ); // fire with the saved data 
 			   }  
 			}
             
@@ -229,9 +233,7 @@ it!
             args = [context[0], args];
             
             if(firing){ // we are currently iterating on the {pending} list of routines
-                queue.push(args); // store resources for recursive firing within {fire} 
-
-function
+                queue.push(args); // store resources for recursive firing within {fire} function
             }else{
                 fire( args );
             }
@@ -360,7 +362,7 @@ Futures = function(){
                         // although IE supports the XMLHttpRequest object, but it does not work on local files.
                         var forceActiveX = (w.ActiveXObject && w.location.protocol === "file:");
                         if (w.XMLHttpRequest && !forceActiveX) {
-                                return new $win.XMLHttpRequest();
+                                return new w.XMLHttpRequest();
                         }else{
                             try {
                                return new w.ActiveXObject("Microsoft.XMLHTTP");
@@ -376,8 +378,8 @@ Futures = function(){
                             JSAjax = function(options){
                                       var xhr = CreateXHRObject();
 			                          if(xhr === null){
-					                        console.log("Error: Ajax Object failed to create request object!");
-				                            return;
+					                console.log("Error: Ajax Object failed to create request object!");
+				                        return;
 			                          }
                                       options.url = options.url+(options.data? "?"+options.data : "");
                                       options.url = options.url+(options.cache? "" : (!options.data? "?" : "&")+"timeburst="+(new Date()).getTime()); 
@@ -396,16 +398,16 @@ Futures = function(){
                                              var rState = this.readyState;
 			                                 if(rState === 2){
 	  		                                      if(typeof(options.beforeSend) === 'function') 
-                                                        options.beforeSend(this);  
+                                                                   options.beforeSend(this);  
                                                         return;
                                                   }
                                                   if(rState === 4){ 
 			                                            xhr[rds] = null;
 	 		                                            if(IsRequestSuccessful(this)){
                                                              if((this.getResponseHeader('Content-Type').replace(/^(text|application)\//, '')) === options.dataType){
-					                                                              options.success(this, this.statusText);
+					                                  options.success(this, this.statusText);
 	                                                                 return;
-			                                                 }else{
+			                                     }else{
                                                                      options.error(this, (this.statusText.indexOf('OK') > -1)? 'JavaScript file not found' : this.statusText);
                                                                      return;
                                                              }
