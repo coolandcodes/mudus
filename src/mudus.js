@@ -14,7 +14,12 @@
 window.Mudus = (function($win, $doc, $callback){
 	
 	Object.each = function(obj, iterator, context){
-                 // more code here...
+                var t = 0, isObj = (typeof obj == "object" && String(obj).indexOf('Object]') > -1);
+                for(t in obj){
+                     if(({}).hasOwnProperty.call(obj, t)){
+                     	    iterator.call(context, obj[t], t, obj);
+                     }
+                }
 	}
 
         Array.prototype.forEach = Array.prototype.forEach || function (h, i){
@@ -51,17 +56,23 @@ window.Mudus = (function($win, $doc, $callback){
          
 		
 
-    var internal = $callback($win, $doc, ({}).hasOwnProperty),
+        var internal = $callback($win, $doc, ({}).hasOwnProperty),
 	    all = $doc.getElementsByTagName('script'),
-	    thisfile = all[all.length - 1];
+	    thisfile = all[all.length - 1],
+	    loadResult;
 		
-		internal.load(new Function("", "return "+thisfile.getAttribute("data-init")+";")());
+           loadResult = internal.load(new Function("", "return "+thisfile.getAttribute("data-init")+";")());
 	
 	return {
 	    ready:function(fn){
+	    	     if(!loadResult){
+	    	     	  throw new Error("nothing to load");
+	    	     }
 		     if(typeof fn == "function"){
 		          internal.ready(fn);
-			 }	  
+		     }else{
+		     	 throw new TypeError("callback not found");
+		     }	  
 		}	 
 	}
         
@@ -76,19 +87,19 @@ window.Mudus = (function($win, $doc, $callback){
                 if(modules[id]){
                           mod = modules[id];
                           if(modules[id].factory){
-                                     factory = mod.factory;
+                                factory = mod.factory;
                           }else{
-                                    return true; // the module has been built, so return and use 'modules[id].exports' to grab it!
-                         };
+                               return true; // the module has been built, so return and use 'modules[id].exports' to grab it!
+                          }
                           exports = factory(req, mod);
                           /*if(typeof exports == "function"){
                                      ;
                            }*/
-						 if(!mod.exports && exports){  
-                             mod.exports = exports; // hoisting the variable back to the module 'exports' property
-                         }
-						 delete mod.factory;
-                         reqGraph.splice(reqGraph.indexOf(id), 1);
+			  if(!mod.exports && !!exports){  
+                               mod.exports = exports; // hoisting the variable back to the module 'exports' property
+                          }
+			  delete mod.factory;
+                          reqGraph.splice(reqGraph.indexOf(id), 1);
                    }else{
                           return false;
                    }
@@ -97,9 +108,9 @@ window.Mudus = (function($win, $doc, $callback){
                          var local = null, 
                              fn = (typeof script == "function") ? script.bind(local) : (new Function("require,module", (typeof script == "string"?script : ' return null; ')));
                              if(!(id in modules)){
-                                         modules[id] = {exports:local, id:id, factory:fn, uri:context};
+                                    modules[id] = {exports:local, id:id, factory:fn, uri:context};
                               }else{
-                                             throw id+" module definiton already exists!";
+                                    throw id+" module definiton already exists!";
                               }
          },
          req = function(id){
@@ -218,10 +229,10 @@ it!
     hasFn:function(fn){
 	    var result = false;
         Object.each(pending, function(val){
-		     if(typeof fn === "function" && fn === val)
-			      result = true;
-		}, this);
-		return result;
+	     if(typeof fn === "function" && fn === val)
+		 result = true;
+	}, this);
+	return result;
     },
     hasList:function(){
         return !!pending; // [false] only when the disabled(); method has been called!!
@@ -265,9 +276,7 @@ Futures = function(){
             if(self.state >= 0 && self.state <=1){
                 self.state = futuresStates[defTracks[dx][1]];
             }
-            defTracks[dx][2].fireWith(self === this? self : this, [].slice.call
-
-(arguments));
+            defTracks[dx][2].fireWith(self === this? self : this, [].slice.call(arguments));
             if(drop){
                 defTracks[arr[0]][2].disable();
                 defTracks[arr[1]][2].disable();
@@ -377,10 +386,10 @@ Futures = function(){
                         var rds = "onreadystatechange",
                             JSAjax = function(options){
                                       var xhr = CreateXHRObject();
-			                          if(xhr === null){
-					                console.log("Error: Ajax Object failed to create request object!");
-				                        return;
-			                          }
+			               if(xhr === null){
+					    console.log("Error: Ajax Object failed to create request object!");
+				            return;
+			               }
                                       options.url = options.url+(options.data? "?"+options.data : "");
                                       options.url = options.url+(options.cache? "" : (!options.data? "?" : "&")+"timeburst="+(new Date()).getTime()); 
                                       xhr.open(options.type, options.url, options.async);
@@ -558,7 +567,9 @@ data, url);
 		 
          return {
 		      load:function(arr){
-			        
+			                if(!arr || arr.length > 0){
+			                     return false;	
+			                }
 					var t , id, opts = {
 								  context:{itemsCount:arr.length},
 								  callback:function(data){
@@ -585,7 +596,7 @@ data, url);
 				                id = TaskRunner.addTask(task, opts);
 						              TaskRunner.runIfPresent(id, afterTask);
                }
-
+                               return true;
 			  },
 			  ready:function(fn){
 			       if(loadReady.set){
