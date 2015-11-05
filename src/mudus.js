@@ -399,7 +399,7 @@ Futures = function(){
                                       xhr.setRequestHeader("Content-Type", "text/"+options.contentType);
                                       xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
                                       xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT");  // Fixes IE re-caching problem
-                                      xhr.setRequestHeader("Connection", "close"); // may throw an non-fatal error in Webkit so no worries…
+                                      xhr.setRequestHeader("Connection", "keepalive"); // may throw an non-fatal error in Webkit so no worries…
 					 
 		                              xhr.send("");	
 					 
