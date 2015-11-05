@@ -100,6 +100,7 @@ window.Mudus = (function($win, $doc, $callback){
                           }
 			  delete mod.factory;
                           reqGraph.splice(reqGraph.indexOf(id), 1);
+                          return true;
                    }else{
                           return false;
                    }
@@ -117,7 +118,7 @@ window.Mudus = (function($win, $doc, $callback){
                                var t, exposed = false;
                                 if(modules[id]){
                                       if(reqGraph.indexOf(id) === -1 || !(modules[id].factory)){
-                                             if(!hasBeenBuilt[id]){
+                                             if(hasBeenBuilt[id]){
                                                      reqGraph.push(id);
                                              }
                                       }else{
