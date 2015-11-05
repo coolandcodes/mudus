@@ -7,17 +7,17 @@
   <script data-init="['./modules/emitter.js', './modules/index.js']" src="../src/mudus.js"></script>
 </head>
 <body style="position:relative;width:100%;">
-    <div id="check-board" style="position:absolute;background-color:red;width:400px; height:400px; top:50%; left:50%; margin-top:-200px; margin-left:-200px;">
+        <div id="check-board" style="position:absolute;background-color:red;width:400px;text-align:center;height:400px; top:50%; left:50%; margin-top:-200px; margin-left:-200px;">
 	    <span style="text-transform:uppercase;color:white;font-weight:bold;">CLICK THIS SURFACE!</span>
 	</div>
-    <script src="./lib/jquery.js"></script>
+        <script src="./lib/jquery.js"></script>
 	<script type="text/javascript">
          $j = jQuery.noConflict();
 		   $j(function(){
 		      Mudus.ready(function(require){
 			         console.log("Mudus is ready!");
 			         var z = require("index");
-					 z.watch("pos");
+				 z.watch("pos");
 			  });
 		 });
     </script>
