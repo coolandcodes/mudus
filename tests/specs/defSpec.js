@@ -6,10 +6,10 @@ describe("definition/use case tests for public interface", function(){
             
           });
      });*/
-     it("should have the 'load' method not defined ", function(){
+     it("should have the 'load' method to be not defined ", function(){
           expect(Mudus.load).toBeUndefined();
      });
-     it("should have the 'ready' method defined", function () {
+     it("should have the 'ready' method to be defined", function () {
           expect(Mudus.ready).toBeDefined();
      });
      it("should have the 'ready' method throw an error", function () {
