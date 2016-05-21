@@ -63,17 +63,25 @@ goto end
  echo.
  echo Mudus is a simple JavaScript module compiler built for ease.
  echo.
- echo USAGE:
- echo mudus [--generate [source-file] -o [destination-file]] [--help -help] [--clear] [--options]
+ echo Usage:
+ echo    mudus [flags] [arguments] 
  echo.
- echo --generate :This compiles all your JavaScript module files into a transport format following all require paths
+ echo flags
+ echo =====
  echo.
- echo --help -help :This lists out the HELP details.
+ echo --generate     This compiles all JavaScript module files into a transport format
+ echo --help, -help      This lists out the HELP details.
+ echo --clear      This clears the state of the compiler stack in processsing.
+ echo --options      This is used to pass off processing options.
  echo.
- echo --clear :This clears the state of the compiler stack in processsing.
+ echo arguments
+ echo =========
  echo.
- echo --options :This is used to pass off processing options.
+ echo source-file:
+ echo output-switch: {-o}
+ echo destination-file:
  echo.
+ echo EXAMPLE: mudus --generate script1.js -o all.js 
 goto end
 
 
